@@ -1,0 +1,21 @@
+- hosts: primary_vd:secondary_vd
+  tasks:
+    - name: create ansible specific directory
+      file: path="{{ansible_file_location}}" state=directory
+      tags:
+        - always
+
+    - name: copy shell files
+      register: files_copy
+      copy: src={{ item }} dest="{{ansible_file_location}}/" mode="u=rwx,g=rx,o=rx"
+      with_fileglob:
+        - "{{inventory_dir}}/files/common/*"
+      tags:
+        - always
+
+    - name: Execute the shell command file
+      when: files_copy is success
+      register: execute_shell
+      command: chdir=/tmp /bin/bash -lc "{{ansible_file_location}}/execute_versa_set_commands.sh"
+      tags:
+        - common
