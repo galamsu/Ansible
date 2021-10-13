@@ -1,0 +1,91 @@
+---
+- name: create tools infra stack
+  hosts: localhost
+  become: yes
+  roles:
+    - heat_stack
+  tags:
+    - heat_stack
+
+#- meta: refresh_inventory
+
+
+- name: app post conf
+#  hosts: tls-app*
+  hosts: tls-appxxxpr03*
+  become: yes
+  roles:
+    - app
+  tags:
+    - app
+    - post_conf
+
+- name: mysql post conf
+  hosts: tls-sqlxxxpr03*
+  become: yes
+  roles:
+    - sql
+  tags:
+    - sql
+    - post_conf
+
+- name: proxy post conf
+  hosts: tls-pxyxxxpr03*
+  become: yes
+  roles:
+    - proxy
+  tags:
+    - proxy
+    - post_conf
+
+- name: kafka post conf
+  hosts: tls-esbxxxpr03*
+  become: yes
+  roles:
+    - kafka
+  tags:
+    - kafka
+    - post_conf
+
+- name: web post conf
+  hosts: tls-webxxxpr03*
+  become: yes
+  roles:
+    - web
+  tags:
+    - web
+    - post_conf
+
+- name: file server post conf
+  hosts: tls-flsxxxpr03*
+  become: yes
+  roles:
+    - file_server
+  tags:
+    - file_server
+    - post_conf
+
+- name: kafka post conf pairing
+  hosts: tls-esbxxxpr03*
+  become: yes
+  roles:
+    - post_conf_pair 
+  tags:
+    - post_conf_pair
+
+- name: proxy post conf pairing
+  hosts: tls-sqlxxxpr03*
+  become: yes
+  roles:
+    - post_conf_pair 
+  tags:
+    - post_conf_pair
+
+- name: proxy post conf pairing
+  hosts: tls-pxyxxxpr03*
+  become: yes
+  roles:
+    - post_conf_pair 
+  tags:
+    - post_conf_pair
+
